@@ -2,13 +2,14 @@
 
 namespace App\Libraries;
 
-class SimpleAdditiveWeighting {
-
+class Moora
+{
     private $data = [];
     private $normalize = [];
+    private $optimations = [];
     private $result = [];
 
-    private $rowsQuantifierOrDivisor = [];
+    private $dividers = [];
 
     private $precision = 3;
 
@@ -43,11 +44,26 @@ class SimpleAdditiveWeighting {
             throw new \Exception("The weight is more than 1, adding data rejected");
         }  else {
 
-            // check if criteria not in COST or BENEFIT
-            if ($criteria == self::CRITERIA_COST) {
-                $this->rowsQuantifierOrDivisor[] = min($data);
-            } elseif ($criteria == self::CRITERIA_BENEFIT) {
-                $this->rowsQuantifierOrDivisor[] = max($data);
+            // check if criteria not COST or BENEFIT,
+            // we don't need to create a function to normalize anymore because we can normalize here
+            if (in_array($criteria, [self::CRITERIA_COST, self::CRITERIA_BENEFIT])) {
+                // find the divider by pow every item and sum them
+                $divider = array_map(function ($item) {
+                    return pow($item, 2);
+                }, $data);
+
+                $divider = array_sum($divider);
+                // then we need to find the square root
+                $divider = sqrt($divider);
+                $divider = round($divider, $this->precision);
+
+                // now we normalize the data (divide every item by divider)
+                $normalize = array_map(function ($item) use ($divider) {
+                    return round($item / $divider, $this->precision);
+                }, $data);
+
+                $this->normalize[] = $normalize;
+
             } else {
                 throw new \Exception("The criteria must be cost or benefit");
             }
@@ -60,37 +76,11 @@ class SimpleAdditiveWeighting {
         }
     }
 
-    public function normalize()
-    {
-        $data = $this->data;
-
-        $normalize = [];
-
-        // loop every rows
-        foreach ($data as $index => $datum) {
-            // then loope every item and difide by its criteria
-            foreach ($datum['data'] as $item) {
-                if ($datum['criteria'] == self::CRITERIA_BENEFIT) {
-                    $normalize[$index][] = round($item / $this->rowsQuantifierOrDivisor[$index], $this->precision);
-                } else {
-                    $normalize[$index][] = round($this->rowsQuantifierOrDivisor[$index] / $item, $this->precision);
-                }
-            }
-        }
-
-        $this->normalize = $normalize;
-    }
-
-    /**
-     * Calculate the result
-     *
-     * @return void
-     */
     public function calculate()
     {
         $preResult = [];
 
-        // we need to calculate multiply every normalize with its height
+        // we need to calculate multiply every normalize with its weight
         foreach ($this->normalize as $index => $rows) {
             foreach ($rows as $row) {
                 $preResult[$index][] = round($this->data[$index]['weight'] * $row, $this->precision);
@@ -99,16 +89,22 @@ class SimpleAdditiveWeighting {
 
         $result = [];
 
-        // and sum every column
+        // loop every row index
         foreach (range(0, count($preResult) - 1) as $range) {
+            $maximum = $minimum = 0;
 
-            $sum = [];
-
-            foreach ($preResult as $rows) {
-                $sum[] = $rows[$range];
+            // loop every preresult and check if the 'criteria' is benefit
+            // then add to maximum, else add to minimum
+            foreach ($preResult as $index => $rows) {
+                if ($this->data[$index]['criteria'] == self::CRITERIA_BENEFIT) {
+                    $maximum += round($rows[$range], $this->precision);
+                } else {
+                    $minimum += round($rows[$range], $this->precision);
+                }
             }
 
-            $result[] = round(array_sum($sum), $this->precision);
+            // and then we must reduce maximum and minimum
+            $result[] = round($maximum - $minimum, $this->precision);
         }
 
         $this->result = $result;
@@ -117,11 +113,6 @@ class SimpleAdditiveWeighting {
     public function getResult()
     {
         return $this->result;
-    }
-
-    public function setPrecision($precision)
-    {
-        $this->precision = $precision;
     }
 
     /**
