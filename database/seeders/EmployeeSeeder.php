@@ -22,6 +22,9 @@ class EmployeeSeeder extends Seeder
         foreach (range(1, 10) as $item) {
             $employees[] = [
                 "name" => $faker->name,
+                "email" => $faker->unique()->email,
+                "phone" => $faker->unique()->numerify('08##########'),
+                "address" => $faker->address,
                 "created_at" => now()->toDateTimeString(),
                 "updated_at" => now()->toDateTimeString(),
             ];

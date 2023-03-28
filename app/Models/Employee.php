@@ -9,5 +9,10 @@ class Employee extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'email', 'phone', 'address'];
+
+    public function subCriterias()
+    {
+        return $this->hasMany(EmployeeSubCriteria::class);
+    }
 }

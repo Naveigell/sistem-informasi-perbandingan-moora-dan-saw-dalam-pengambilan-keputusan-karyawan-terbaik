@@ -6,10 +6,7 @@ class Moora
 {
     private $data = [];
     private $normalize = [];
-    private $optimations = [];
     private $result = [];
-
-    private $dividers = [];
 
     private $precision = 3;
 
