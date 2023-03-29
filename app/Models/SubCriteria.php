@@ -10,4 +10,9 @@ class SubCriteria extends Model
     use HasFactory;
 
     protected $fillable = ['description', 'comment', 'value'];
+
+    public function criteria()
+    {
+        return $this->belongsTo(Criteria::class);
+    }
 }
