@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('employees', \App\Http\Controllers\Admin\EmployeeController::class)->except('show');
+    Route::resource('normalizations', \App\Http\Controllers\Admin\NormalizationController::class)->only('index');
     Route::resource('calculations', \App\Http\Controllers\Admin\CalculationController::class)->only('index');
 });
 
