@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-class SimpleAdditiveWeighting {
+class SimpleAdditiveWeighting extends DecisionSupportSystem {
 
     private $data = [];
     private $normalize = [];
@@ -58,6 +58,8 @@ class SimpleAdditiveWeighting {
                 "weight" => $weight,
             ];
         }
+
+        $this->ensureIfAllDataContainsSameLength($this->data);
     }
 
     public function normalize()
@@ -100,7 +102,7 @@ class SimpleAdditiveWeighting {
         $result = [];
 
         // and sum every column
-        foreach (range(0, count($preResult) - 1) as $range) {
+        foreach (range(0, $this->dataLength - 1) as $range) {
 
             $sum = [];
 
@@ -124,6 +126,11 @@ class SimpleAdditiveWeighting {
         $this->precision = $precision;
     }
 
+    public function getData()
+    {
+        return $this->data;
+    }
+
     /**
      * Set reject the data if weight is more than 1
      *
@@ -132,5 +139,10 @@ class SimpleAdditiveWeighting {
     public function rejectWeightIfMoreThanOne($rejectWeightIfMoreThanOne = true)
     {
         $this->rejectWeightIfMoreThanOne = $rejectWeightIfMoreThanOne;
+    }
+
+    public function getNormalizeData()
+    {
+        return $this->normalize;
     }
 }

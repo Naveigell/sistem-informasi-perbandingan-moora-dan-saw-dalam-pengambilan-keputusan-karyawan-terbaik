@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-class Moora
+class Moora extends DecisionSupportSystem
 {
     private $data = [];
     private $normalize = [];
@@ -71,6 +71,8 @@ class Moora
                 "weight" => $weight,
             ];
         }
+
+        $this->ensureIfAllDataContainsSameLength($this->data);
     }
 
     public function calculate()
@@ -87,7 +89,7 @@ class Moora
         $result = [];
 
         // loop every row index
-        foreach (range(0, count($preResult) - 1) as $range) {
+        foreach (range(0, $this->dataLength - 1) as $range) {
             $maximum = $minimum = 0;
 
             // loop every preresult and check if the 'criteria' is benefit
@@ -112,6 +114,11 @@ class Moora
         return $this->result;
     }
 
+    public function getData()
+    {
+        return $this->data;
+    }
+
     /**
      * Set reject the data if weight is more than 1
      *
@@ -120,5 +127,15 @@ class Moora
     public function rejectWeightIfMoreThanOne($rejectWeightIfMoreThanOne = true)
     {
         $this->rejectWeightIfMoreThanOne = $rejectWeightIfMoreThanOne;
+    }
+
+    public function setPrecision($precision)
+    {
+        $this->precision = $precision;
+    }
+
+    public function getNormalizeData()
+    {
+        return $this->normalize;
     }
 }

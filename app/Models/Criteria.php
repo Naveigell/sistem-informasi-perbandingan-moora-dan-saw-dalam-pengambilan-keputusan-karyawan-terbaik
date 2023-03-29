@@ -18,4 +18,9 @@ class Criteria extends Model
     {
         return $this->hasMany(SubCriteria::class);
     }
+
+    public function getWeightFormattedAttribute()
+    {
+        return $this->weight / 100;
+    }
 }

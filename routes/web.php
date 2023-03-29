@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('employees', \App\Http\Controllers\Admin\EmployeeController::class)->except('show');
+    Route::resource('calculations', \App\Http\Controllers\Admin\CalculationController::class)->only('index');
 });
 
 Route::redirect('/', \route('admin.employees.index'));
