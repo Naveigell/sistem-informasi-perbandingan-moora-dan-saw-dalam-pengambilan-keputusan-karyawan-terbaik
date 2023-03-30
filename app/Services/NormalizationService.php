@@ -16,7 +16,7 @@ class NormalizationService extends DecisionSupportSystemBaseService
     public function simpleAdditiveWeighting(Collection $criterias, Collection $employeeSubCriterias)
     {
         $simpleAdditiveWeighting = new SimpleAdditiveWeighting();
-        $simpleAdditiveWeighting->rejectWeightIfMoreThanOne();
+        $simpleAdditiveWeighting->setPrecision(2);
 
         $employeeIds = null;
 
@@ -35,7 +35,7 @@ class NormalizationService extends DecisionSupportSystemBaseService
     public function moora(Collection $criterias, Collection $employeeSubCriterias)
     {
         $moora = new Moora();
-        $moora->rejectWeightIfMoreThanOne();
+        $moora->setPrecision(2);
 
         $employeeIds = null;
 

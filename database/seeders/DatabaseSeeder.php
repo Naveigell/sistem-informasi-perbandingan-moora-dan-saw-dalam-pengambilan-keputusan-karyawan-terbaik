@@ -17,6 +17,5 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CriteriaSeeder::class);
         $this->call(EmployeeSeeder::class);
-        $this->call(EmployeeSubCriteriaSeeder::class);
     }
 }

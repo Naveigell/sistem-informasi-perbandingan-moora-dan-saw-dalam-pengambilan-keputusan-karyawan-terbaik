@@ -19,7 +19,7 @@ class DecisionSupportSystemBaseService
 
             $system->addData(
                 $employeeSubCriteria->map(fn($item) => $item->subCriteria->value)->toArray(), // get every value from subcriteria
-                $criteria->weight_formatted, // we must format weigth to not more than 1
+                $criteria->weight, // we must format weigth to not more than 1
                 strtoupper($criteria->attribute),
             );
         }
