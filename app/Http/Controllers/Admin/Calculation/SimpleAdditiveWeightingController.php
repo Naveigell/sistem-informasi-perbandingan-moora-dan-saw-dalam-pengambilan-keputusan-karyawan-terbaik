@@ -32,6 +32,8 @@ class SimpleAdditiveWeightingController extends Controller
 
         $calculationSAW = $calculationService->simpleAdditiveWeighting($criterias, $employeesSubCriterias);
 
+        $employeesNormalizationSAWFirst = $employeesNormalizationSAWFirst->sortBy('id');
+
         return view('admin.pages.simple_additive_weightings.index', compact(
             'criterias',
             'employeesMatrix',

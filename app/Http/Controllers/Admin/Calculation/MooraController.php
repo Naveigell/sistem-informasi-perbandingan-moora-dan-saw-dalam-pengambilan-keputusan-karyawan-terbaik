@@ -28,6 +28,8 @@ class MooraController extends Controller
 
         $calculationMoora = $calculationService->moora($criterias, $employeesSubCriterias);
 
+        $employeesNormalizationMooraFirst = $employeesNormalizationMooraFirst->sortBy('id');
+
         return view('admin.pages.mooras.index', compact(
             'criterias',
             'employeesMatrix',

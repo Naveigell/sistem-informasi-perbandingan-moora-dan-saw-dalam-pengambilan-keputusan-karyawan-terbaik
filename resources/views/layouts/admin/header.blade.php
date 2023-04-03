@@ -2,12 +2,16 @@
 
 <div class="navbar-bg"></div>
 <nav class="navbar navbar-expand-lg main-navbar">
-    <form class="form-inline mr-auto">
+    <form class="form-inline mr-auto" style="display: flex; justify-items: center; align-content: center;">
         <ul class="navbar-nav mr-3">
             <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
             <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
         </ul>
     </form>
+
+    <h5 class="navbar-nav d-block text text-center text-white font-weight-bold justify-content-center align-items-center w-100">
+        SISTEM PENDUKUNG KEPUTUSAN <br> PENENTUAN KARYAWAN TERBAIK WEDJA RESTAURANT
+    </h5>
     <style>
         .dropdown-no-after::after {
             content: none !important;
